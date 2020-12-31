@@ -1,10 +1,10 @@
 import Axios from 'axios';
 import StorageService from './Storage';
 // eslint-disable-next-line no-unused-vars
-let apiDispatch = () => {};
+// let apiDispatch = () => {};
 
 export const provideDispatchToApiService = dispatch => {
-  apiDispatch = dispatch;
+  return dispatch;
 };
 
 export const baseUrl = process.env.REACT_APP_API_URL;
