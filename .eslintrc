@@ -1,0 +1,27 @@
+{
+  "extends": [
+    "react-app",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["react", "react-hooks"],
+  "env": {
+    "es6": true,
+    "node": true,
+    "browser": true,
+    "jest": true
+  },
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "no-empty-function": "off",
+    "no-useless-computed-key": "off",
+    "prettier/prettier": ["error", { "singleQuote": true }]
+  },
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "detect"
+    }
+  }
+}

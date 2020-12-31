@@ -1,0 +1,6 @@
+node_modules/*
+*.css
+*.svg
+*.png
+*.d.ts
+tsconfig.json
