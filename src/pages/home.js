@@ -9,26 +9,24 @@ import {
   CheckCircleOutlined,
 } from '@ant-design/icons';
 
-import { useOperation } from '../hooks';
-import {
-  fetchSignIn,
-  fetchRatePlans,
-  fetchChannels,
-} from '../store/ducks/user/operations';
-import { fetchBookingCreate } from '../store/ducks/booking/operations';
+import { fetchSignIn, fetchRatePlans, fetchChannels } from 'store/ducks/user/operations';
+import { fetchBookingCreate } from 'store/ducks/booking/operations';
+import { getAuthStatus, getRatePlanes, getChannels } from 'store/ducks/user/selectors';
 
-import { AUTH_STATUSES } from '../constants/authStatuses';
-import { getAuthStatus, getRatePlanes, getChannels } from '../store/ducks/user/selectors';
+import SignInForm from 'components/Forms/SignInForm';
+import BookingForm from 'components/Forms/BookingForm';
 
-import SignInForm from '../components/Forms/SignInForm';
-import BookingForm from '../components/Forms/BookingForm';
+import { useOperation } from 'hooks';
+import { AUTH_STATUSES } from 'constants/authStatuses';
+import { initialValues as initialValuesBooking } from 'components/Forms/BookingForm/initValues';
+
 const { Step } = Steps;
 
 const Home = () => {
   const [onSignIn, isLoadingSignIn] = useOperation(fetchSignIn);
   const [onFetchRatePlans] = useOperation(fetchRatePlans);
   const [onFetchChannels] = useOperation(fetchChannels);
-  const [onFetchBookingCreate] = useOperation(fetchBookingCreate);
+  const [onFetchBookingCreate, isLoadingBookingCreate] = useOperation(fetchBookingCreate);
 
   const authStatus = useSelector(getAuthStatus);
   const ratePlanes = useSelector(getRatePlanes);
@@ -42,9 +40,9 @@ const Home = () => {
     if (authStatus === AUTH_STATUSES.AUTHOREZED) {
       return { status: 'finish', icon: <CheckCircleOutlined /> };
     }
-    // if (isLoadingSignIn && authStatus === AUTH_STATUSES.UNATHORIZED) {
-    //   return { status: 'process', icon: <LoadingOutlined /> };
-    // }
+    if (isLoadingBookingCreate && authStatus === AUTH_STATUSES.UNATHORIZED) {
+      return { status: 'process', icon: <LoadingOutlined /> };
+    }
     return { status: 'wait', icon: <SolutionOutlined /> };
   }, []);
 
@@ -86,6 +84,7 @@ const Home = () => {
         onSubmit={onFetchBookingCreate}
         ratePlanes={ratePlanes}
         channels={channels}
+        initialValues={initialValuesBooking}
       />
       {/* )} */}
     </Wrapper>

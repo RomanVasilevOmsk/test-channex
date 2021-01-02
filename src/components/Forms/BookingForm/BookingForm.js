@@ -16,7 +16,7 @@ import { FirstTitleWrapper, ButtonWrapper } from './styles';
 const { Title } = Typography;
 const { RangePicker } = DatePicker;
 
-const BookingForm = ({ onSubmit, className, ratePlanes, channels }) => {
+const BookingForm = ({ onSubmit, className, ratePlanes, channels, initialValues }) => {
   const ratePlanesOptions = useMemo(() => getOptionsForSelect(ratePlanes?.data), [
     ratePlanes,
   ]);
@@ -24,12 +24,7 @@ const BookingForm = ({ onSubmit, className, ratePlanes, channels }) => {
 
   return (
     <Form
-      initialValues={{
-        status: 'commit',
-        reservation_id: null,
-        currency: 'GBP',
-        arrival_hour: '10:00',
-      }}
+      initialValues={initialValues}
       className={className}
       onSubmit={onSubmit}
       mutators={{
@@ -105,6 +100,7 @@ const BookingForm = ({ onSubmit, className, ratePlanes, channels }) => {
 BookingForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   className: PropTypes.string,
+  initialValues: PropTypes.shape({}),
   ratePlanes: PropTypes.shape({}),
   channels: PropTypes.shape({}),
 };

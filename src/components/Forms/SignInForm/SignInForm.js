@@ -1,39 +1,40 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Form, Input, Button } from 'antd';
-const { Item } = Form;
-
-const layout = {
-  labelCol: { span: 10 },
-  wrapperCol: { span: 14 },
-};
+import { Field, Form } from 'react-final-form';
+import { Button } from 'antd';
+import { FieldTextInput, FieldPasswordInput } from 'components/FormFields';
+import { required } from 'utils/validation';
 
 const SignInForm = ({ onSubmit, className }) => {
   return (
-    <Form {...layout} className={className} name="basic" onFinish={onSubmit}>
-      <FormItem
-        label="Email"
-        name="email"
-        rules={[{ required: true, message: 'Please input your email!' }]}
-      >
-        <Input />
-      </FormItem>
+    <Form
+      onSubmit={onSubmit}
+      className={className}
+      render={({ handleSubmit }) => (
+        <form onSubmit={handleSubmit}>
+          <Field
+            name="email"
+            label="Email"
+            component={FieldTextInput}
+            validate={required}
+          />
 
-      <FormItem
-        label="Password"
-        name="password"
-        rules={[{ required: true, message: 'Please input your password!' }]}
-      >
-        <Input.Password />
-      </FormItem>
+          <Field
+            name="password"
+            label="Password"
+            component={FieldPasswordInput}
+            validate={required}
+          />
 
-      <ButtonWrapper>
-        <Button type="primary" htmlType="submit">
-          Sign in
-        </Button>
-      </ButtonWrapper>
-    </Form>
+          <ButtonWrapper>
+            <Button type="primary" htmlType="submit">
+              Sign in
+            </Button>
+          </ButtonWrapper>
+        </form>
+      )}
+    />
   );
 };
 
@@ -41,12 +42,6 @@ const ButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
-`;
-
-const FormItem = styled(Item)`
-  & .ant-form-item-label {
-    text-align: left;
-  }
 `;
 
 SignInForm.propTypes = {
