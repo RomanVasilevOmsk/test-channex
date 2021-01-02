@@ -1,4 +1,4 @@
-import { fetch } from '../../../services/ApiService';
+import { fetch } from 'services/ApiService';
 
 export const fetchSignIn = data =>
   fetch(
@@ -9,3 +9,7 @@ export const fetchSignIn = data =>
     },
     {},
   );
+
+export const fetchChannels = () => fetch('get', `channels`);
+
+export const fetchRatePlans = () => fetch('get', 'rate_plans/options');

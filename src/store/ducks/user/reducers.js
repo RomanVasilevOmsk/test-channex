@@ -1,19 +1,30 @@
-import { createAction, createReducer } from '@reduxjs/toolkit';
-import { AUTH_STATUSES } from '../../../constants/authStatuses';
+import { createReducer } from '@reduxjs/toolkit';
+import { AUTH_STATUSES } from 'constants/authStatuses';
 
-import * as types from './types';
+import * as actions from './actions';
 
-const setUser = createAction(types.SET_USER);
-
-const initialState = { user: {} };
+const initialState = { user: {}, ratePlans: {}, channels: {} };
 
 const userReducer = createReducer(initialState, builder => {
-  builder.addCase(setUser, (state, action) => {
-    return {
-      ...state,
-      user: { ...action.payload, authStatus: AUTH_STATUSES.AUTHOREZED },
-    };
-  });
+  builder
+    .addCase(actions.setUser, (state, action) => {
+      return {
+        ...state,
+        user: { ...action.payload, authStatus: AUTH_STATUSES.AUTHOREZED },
+      };
+    })
+    .addCase(actions.setRatePlanes, (state, action) => {
+      return {
+        ...state,
+        ratePlans: action.payload,
+      };
+    })
+    .addCase(actions.setChannels, (state, action) => {
+      return {
+        ...state,
+        channels: action.payload,
+      };
+    });
 });
 
 export default userReducer;

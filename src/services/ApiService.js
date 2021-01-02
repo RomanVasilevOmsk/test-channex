@@ -15,12 +15,12 @@ export const axios = Axios.create();
 
 export const fetch = (method, uri, options, headers) => {
   const instance = axios;
-  const url = `${options.host || apiUrl}/${uri}`;
+  const url = `${options?.host || apiUrl}/${uri}`;
 
   const response = instance({
     method,
     url,
-    data: options.payload,
+    data: options?.payload,
     headers: headers || { Authorization: `Bearer ${StorageService.getAccessToken()}` },
   });
 

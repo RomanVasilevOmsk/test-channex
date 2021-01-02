@@ -16,7 +16,13 @@
     "react-hooks/rules-of-hooks": "error",
     "no-empty-function": "off",
     "no-useless-computed-key": "off",
-    "prettier/prettier": ["error", { "singleQuote": true }]
+    "prettier/prettier": ["error", { "singleQuote": true }],
+    "react/prop-types": "off",
+
+    // "react/require-default-props": ["false", { "ignoreFunctionalComponents": true }],
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
   },
   "settings": {
     "react": {
