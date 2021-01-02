@@ -3,11 +3,17 @@ import PropTypes from 'prop-types';
 import { PlusOutlined } from '@ant-design/icons';
 import { Field } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
-import { InputNumber, Typography, Space } from 'antd';
+import { InputNumber, Typography } from 'antd';
 
 import { FieldSelect } from 'components/FormFields';
 import FormFieldInner from 'components/FormFieldInner';
-import { isInteger, required } from 'utils/validation';
+import {
+  //TODO:
+  // composeValidators,
+  // isInteger,
+  // isIntegerObject,
+  required,
+} from 'utils/validation';
 import { getDates } from 'utils';
 import { TitleWrapper, FirstTitleWrapper } from './styles';
 const { Title, Text } = Typography;
@@ -45,11 +51,7 @@ const RoomsField = ({ form, values, ratePlanes }) => {
               />
             </FirstTitleWrapper>
             {fields.map((item, index) => (
-              <Space
-                key={index}
-                style={{ width: '100%', marginBottom: 8 }}
-                direction="vertical"
-              >
+              <div key={index} style={{ width: '100%', marginBottom: 8 }}>
                 <TitleWrapper>
                   <Title level={5}>Room #{index + 1}</Title>
                   {index > 0 && (
@@ -74,10 +76,18 @@ const RoomsField = ({ form, values, ratePlanes }) => {
                   isRequired
                 />
 
-                <Field name={`${item}.occupancy.adults`} validate={isInteger}>
+                <Field
+                  name={`${item}.occupancy.adults`}
+                  //TODO:
+                  // validate={composeValidators(required, isInteger)}
+                >
                   {({ input, meta }) => {
                     return (
-                      <FormFieldInner label="Adults" meta={meta} isRequired>
+                      <FormFieldInner
+                        label="Adults"
+                        error={meta.touched && meta.error}
+                        isRequired
+                      >
                         <InputNumber
                           value={input.value}
                           onChange={val => {
@@ -89,10 +99,18 @@ const RoomsField = ({ form, values, ratePlanes }) => {
                   }}
                 </Field>
 
-                <Field name={`${item}.occupancy.children`} validate={isInteger}>
+                <Field
+                  name={`${item}.occupancy.children`}
+                  //TODO:
+                  // validate={composeValidators(required, isInteger)}
+                >
                   {({ input, meta }) => {
                     return (
-                      <FormFieldInner label="Children" meta={meta} isRequired>
+                      <FormFieldInner
+                        label="Children"
+                        error={meta.touched && meta.error}
+                        isRequired
+                      >
                         <InputNumber
                           value={input.value}
                           onChange={val => {
@@ -104,10 +122,18 @@ const RoomsField = ({ form, values, ratePlanes }) => {
                   }}
                 </Field>
 
-                <Field name={`${item}.occupancy.infants`} validate={isInteger}>
+                <Field
+                  name={`${item}.occupancy.infants`}
+                  //TODO:
+                  // validate={composeValidators(required, isInteger)}
+                >
                   {({ input, meta }) => {
                     return (
-                      <FormFieldInner label="Infants" meta={meta} isRequired>
+                      <FormFieldInner
+                        label="Infants"
+                        error={meta.touched && meta.error}
+                        isRequired
+                      >
                         <InputNumber
                           value={input.value}
                           onChange={val => {
@@ -119,14 +145,18 @@ const RoomsField = ({ form, values, ratePlanes }) => {
                   }}
                 </Field>
 
-                <Field name={`${item}.days`}>
+                <Field
+                  name={`${item}.days`}
+                  //TODO:
+                  // validate={composeValidators(isIntegerObject, required)}
+                >
                   {({ input, meta }) => {
                     if (Object.entries(input.value?.length > 0)) {
                       return Object.entries(input.value).map((day, indexDay) => (
                         <FormFieldInner
                           key={indexDay}
                           label={day[0]}
-                          meta={meta}
+                          error={meta.touched && meta.error}
                           isRequired
                         >
                           <InputNumber
@@ -144,7 +174,7 @@ const RoomsField = ({ form, values, ratePlanes }) => {
                     return null;
                   }}
                 </Field>
-              </Space>
+              </div>
             ))}
           </>
         );

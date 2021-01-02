@@ -7,10 +7,10 @@ const initialState = { user: {}, ratePlans: {}, channels: {} };
 
 const userReducer = createReducer(initialState, builder => {
   builder
-    .addCase(actions.setUser, (state, action) => {
+    .addCase(actions.setUser, state => {
       return {
         ...state,
-        user: { ...action.payload, authStatus: AUTH_STATUSES.AUTHOREZED },
+        user: { authStatus: AUTH_STATUSES.AUTHOREZED },
       };
     })
     .addCase(actions.setRatePlanes, (state, action) => {

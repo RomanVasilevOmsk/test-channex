@@ -25,23 +25,23 @@ const BookingForm = ({ onSubmit, className, ratePlanes, channels, initialValues 
   return (
     <Form
       initialValues={initialValues}
-      className={className}
       onSubmit={onSubmit}
       mutators={{
         ...arrayMutators,
       }}
-      render={({ handleSubmit, form, values }) => (
-        <form onSubmit={handleSubmit}>
+      render={({ handleSubmit, form, values, submitting }) => (
+        <div onSubmit={handleSubmit} className={className}>
           <Field
             name="channel_id"
             label="Channel"
             component={FieldSelect}
             options={channelsOptions}
             validate={required}
+            isRequired
           />
           <Field>
-            {({ meta }) => (
-              <FormFieldInner label="Dates" meta={meta}>
+            {() => (
+              <FormFieldInner label="Dates">
                 <RangePicker
                   placeholder={['From', 'To']}
                   disabledDate={d => !d || d.isBefore(new Date())}
@@ -61,7 +61,11 @@ const BookingForm = ({ onSubmit, className, ratePlanes, channels, initialValues 
           <Field name="customer.name" validate={required}>
             {({ input, meta }) => {
               return (
-                <FormFieldInner label="Name" meta={meta} isRequired>
+                <FormFieldInner
+                  label="Name"
+                  error={meta.touched && meta.error}
+                  isRequired
+                >
                   <Input
                     value={input.value}
                     onChange={e => input.onChange(e.target.value)}
@@ -74,7 +78,11 @@ const BookingForm = ({ onSubmit, className, ratePlanes, channels, initialValues 
           <Field name="customer.surname" validate={required}>
             {({ input, meta }) => {
               return (
-                <FormFieldInner label="Surname" meta={meta} isRequired>
+                <FormFieldInner
+                  label="Surname"
+                  error={meta.touched && meta.error}
+                  isRequired
+                >
                   <Input
                     value={input.value}
                     onChange={e => input.onChange(e.target.value)}
@@ -87,11 +95,11 @@ const BookingForm = ({ onSubmit, className, ratePlanes, channels, initialValues 
           <RoomsField ratePlanes={ratePlanesOptions} form={form} values={values} />
 
           <ButtonWrapper>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" onClick={handleSubmit} disabled={submitting}>
               Book
             </Button>
           </ButtonWrapper>
-        </form>
+        </div>
       )}
     />
   );

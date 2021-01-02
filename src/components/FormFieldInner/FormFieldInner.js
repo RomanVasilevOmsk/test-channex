@@ -8,21 +8,18 @@ import { layout } from 'constants/layoutFormStyle';
 import FormError from '../FormError';
 const { Item } = Form;
 
-function FormFieldInner({ meta, label, children, isRequired }) {
-  const { error, submitError, touched } = meta;
-  const isError = (error && touched) || submitError;
-
+function FormFieldInner({ error, label, children, isRequired }) {
   return (
     <FormItem
       {...layout}
       label={label}
       className={classNames('ant-row ant-form-item', {
-        'ant-form-item-with-help ant-form-item-has-error': isError,
+        'ant-form-item-with-help ant-form-item-has-error': error,
       })}
       required={isRequired}
     >
       {children}
-      {isError && <FormError meta={meta} />}
+      {error && typeof error == 'string' && <FormError error={error} />}
     </FormItem>
   );
 }

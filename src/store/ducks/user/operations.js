@@ -19,6 +19,13 @@ export const fetchSignIn = payload => async dispatch => {
     });
 };
 
+export const currentUserAuthorized = () => async dispatch => {
+  const isToken = StorageService.getAccessToken();
+  if (isToken) {
+    dispatch(actions.setUser());
+  }
+};
+
 export const fetchChannels = () => async dispatch => {
   return api
     .fetchChannels()

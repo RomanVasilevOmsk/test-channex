@@ -2,14 +2,14 @@ import React, { useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Steps } from 'antd';
-import {
-  UserOutlined,
-  SolutionOutlined,
-  LoadingOutlined,
-  CheckCircleOutlined,
-} from '@ant-design/icons';
+import { UserOutlined, SolutionOutlined, CheckCircleOutlined } from '@ant-design/icons';
 
-import { fetchSignIn, fetchRatePlans, fetchChannels } from 'store/ducks/user/operations';
+import {
+  fetchSignIn,
+  fetchRatePlans,
+  fetchChannels,
+  currentUserAuthorized,
+} from 'store/ducks/user/operations';
 import { fetchBookingCreate } from 'store/ducks/booking/operations';
 import { getAuthStatus, getRatePlanes, getChannels } from 'store/ducks/user/selectors';
 
@@ -24,9 +24,11 @@ const { Step } = Steps;
 
 const Home = () => {
   const [onSignIn, isLoadingSignIn] = useOperation(fetchSignIn);
+  const [onCurrentUserAuthorized] = useOperation(currentUserAuthorized);
   const [onFetchRatePlans] = useOperation(fetchRatePlans);
   const [onFetchChannels] = useOperation(fetchChannels);
-  const [onFetchBookingCreate, isLoadingBookingCreate] = useOperation(fetchBookingCreate);
+
+  const [onFetchBookingCreate] = useOperation(fetchBookingCreate);
 
   const authStatus = useSelector(getAuthStatus);
   const ratePlanes = useSelector(getRatePlanes);
@@ -40,9 +42,7 @@ const Home = () => {
     if (authStatus === AUTH_STATUSES.AUTHOREZED) {
       return { status: 'finish', icon: <CheckCircleOutlined /> };
     }
-    if (isLoadingBookingCreate && authStatus === AUTH_STATUSES.UNATHORIZED) {
-      return { status: 'process', icon: <LoadingOutlined /> };
-    }
+
     return { status: 'wait', icon: <SolutionOutlined /> };
   }, []);
 
@@ -50,18 +50,16 @@ const Home = () => {
     if (authStatus === AUTH_STATUSES.AUTHOREZED) {
       return { status: 'finish', icon: <CheckCircleOutlined /> };
     }
-    if (isLoadingSignIn && authStatus === AUTH_STATUSES.UNATHORIZED) {
-      return { status: 'process', icon: <LoadingOutlined /> };
-    }
+
     return { status: 'wait', icon: <UserOutlined /> };
   }, [authStatus, isLoadingSignIn]);
 
   useEffect(() => {
-    onFetchRatePlans();
-    onFetchChannels();
+    onCurrentUserAuthorized();
+
     if (authStatus === AUTH_STATUSES.AUTHOREZED) {
-      // onfetchRatePlans();
-      // onfetchChannels();
+      onFetchRatePlans();
+      onFetchChannels();
     }
   }, [authStatus]);
 
@@ -78,15 +76,20 @@ const Home = () => {
           icon={verificationStatus.icon}
         />
       </Steps>
-      <SignIn onSubmit={handleSignIn} />
-      {/* {authStatus === AUTH_STATUSES.AUTHOREZED && ( */}
-      <BookingForm
-        onSubmit={onFetchBookingCreate}
-        ratePlanes={ratePlanes}
-        channels={channels}
-        initialValues={initialValuesBooking}
+
+      <SignIn
+        onSubmit={handleSignIn}
+        isAuthorized={authStatus === AUTH_STATUSES.AUTHOREZED}
       />
-      {/* )} */}
+
+      {authStatus === AUTH_STATUSES.AUTHOREZED && (
+        <BookingForm
+          onSubmit={onFetchBookingCreate}
+          ratePlanes={ratePlanes}
+          channels={channels}
+          initialValues={initialValuesBooking}
+        />
+      )}
     </Wrapper>
   );
 };

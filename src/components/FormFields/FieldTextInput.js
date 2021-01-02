@@ -6,7 +6,11 @@ import FormFieldInner from '../FormFieldInner';
 
 const FieldTextInput = ({ input, meta, label, isRequired, ...componentProps }) => {
   return (
-    <FormFieldInner meta={meta} isRequired={isRequired} label={label}>
+    <FormFieldInner
+      error={meta.touched && meta.error}
+      isRequired={isRequired}
+      label={label}
+    >
       <Input {...componentProps} value={input.value} onChange={input.onChange} />
     </FormFieldInner>
   );

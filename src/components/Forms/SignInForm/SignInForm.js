@@ -6,18 +6,18 @@ import { Button } from 'antd';
 import { FieldTextInput, FieldPasswordInput } from 'components/FormFields';
 import { required } from 'utils/validation';
 
-const SignInForm = ({ onSubmit, className }) => {
+const SignInForm = ({ onSubmit, className, isAuthorized }) => {
   return (
     <Form
       onSubmit={onSubmit}
-      className={className}
-      render={({ handleSubmit }) => (
-        <form onSubmit={handleSubmit}>
+      render={({ handleSubmit, submitting }) => (
+        <Wrapper className={className} isAuthorized={isAuthorized}>
           <Field
             name="email"
             label="Email"
             component={FieldTextInput}
             validate={required}
+            isRequired
           />
 
           <Field
@@ -25,14 +25,15 @@ const SignInForm = ({ onSubmit, className }) => {
             label="Password"
             component={FieldPasswordInput}
             validate={required}
+            isRequired
           />
 
           <ButtonWrapper>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" onClick={handleSubmit} disabled={submitting}>
               Sign in
             </Button>
           </ButtonWrapper>
-        </form>
+        </Wrapper>
       )}
     />
   );
@@ -44,8 +45,27 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
+const Wrapper = styled.div`
+  position: relative;
+  ${({ isAuthorized }) =>
+    isAuthorized &&
+    `
+    &:after {
+      content: "";
+      background: #ffffffa6;
+      position: absolute;
+      right: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      top: 0;
+    }
+  `}
+`;
+
 SignInForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  isAuthorized: PropTypes.bool,
   className: PropTypes.string,
 };
 

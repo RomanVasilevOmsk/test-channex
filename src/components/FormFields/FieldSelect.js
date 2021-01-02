@@ -6,7 +6,11 @@ import FormFieldInner from '../FormFieldInner';
 
 const FieldSelect = ({ input, meta, label, options, isRequired, ...componentProps }) => {
   return (
-    <FormFieldInner meta={meta} isRequired={isRequired} label={label}>
+    <FormFieldInner
+      error={meta.touched && meta.error}
+      isRequired={isRequired}
+      label={label}
+    >
       <Select
         {...componentProps}
         options={options}
